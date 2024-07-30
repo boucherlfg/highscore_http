@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http.Json;
 
 namespace TestClient 
 {
 	class Program 
 	{
-		static void Main() 
+		static async Task Main() 
 		{
 			while (true)
 			{
@@ -33,7 +32,7 @@ namespace TestClient
 			}
 		}
 
-		async Task<string> SendHighscore(string name, int score)
+		static async Task<string> SendHighscore(string name, int score)
 		{
 			var dict = new Dictionary<string, string>()
 			{
