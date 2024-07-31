@@ -28,12 +28,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         score = content["score"]
         
         if(not player or not score): return
-
-        add_score(self.highscores, player, score)
         
+        self.highscores = from_json()
+        add_score(self.highscores, player, score)
         self.highscores = self.highscores[0:entry_count]
-
         to_json(self.highscores)
+
         print("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                 str(self.path), str(self.headers), post_data.decode('utf-8'))
 

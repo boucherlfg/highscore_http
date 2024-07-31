@@ -4,6 +4,24 @@ import socket
 
 entry_count : int = 10
 
+def console_async():
+    while True:
+        line = str(input(" > "))
+        if line.startswith("clear"):
+            clear_scores()
+        elif line.startswith("get"):
+            [print(f"{entry.position} - {entry.name} - {entry.score}") for entry in from_json()]
+        elif line.startswith("post"):
+            name = line.split(' ')[1]
+            score = int(line.split(' ')[2])
+            highscores = from_json()
+            add_score(highscores, name, score)
+            highscores = highscores[0:entry_count]
+            to_json(highscores)
+            [print(f"{entry.position} - {entry.name} - {entry.score}") for entry in highscores]
+        elif line.startswith("help"):
+            print("clear get post help")
+
 class Entry:
     name : str
     score : int
@@ -39,6 +57,9 @@ def get_ip() -> str:
 
 def get_value_for(content : str, name : str):
     return [i.split("=")[1] for i in content.split("&") if i.startswith(name)][0]
+
+def clear_scores():
+    os.remove("save.txt")
 
 def from_json():
     try:
