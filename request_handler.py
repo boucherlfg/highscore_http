@@ -1,14 +1,21 @@
 from http.server import BaseHTTPRequestHandler
-from util import get_value_for, to_json, from_json, add_score, Entry
+from util import to_json, from_json, add_score, Entry, entry_count
 import json
 
-class PostHandler(BaseHTTPRequestHandler):
+class RequestHandler(BaseHTTPRequestHandler):
     highscores : list[Entry]
 
     def _set_response(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
+
+    def do_GET(self):
+        self.highscores = from_json()
+
+        self._set_response()
+        content = str([str(e) for e in self.highscores])
+        self.wfile.write(content.encode("utf-8"))
 
     def do_POST(self):
         self.highscores = from_json()
@@ -23,6 +30,8 @@ class PostHandler(BaseHTTPRequestHandler):
         if(not player or not score): return
 
         add_score(self.highscores, player, score)
+        
+        self.highscores = self.highscores[0:entry_count]
 
         to_json(self.highscores)
         print("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",

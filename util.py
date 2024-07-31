@@ -2,7 +2,7 @@ import json
 import os
 import socket
 
-entry_count : int = 30
+entry_count : int = 10
 
 class Entry:
     name : str
@@ -29,7 +29,7 @@ def add_score(highscores : list[Entry], name : str, score : int):
     
     highscores.append(entry)
     highscores.sort(key = lambda e : e.position)
-    highscores = highscores[0:entry_count - 1]
+    print("")
 
 
 def get_ip() -> str:
